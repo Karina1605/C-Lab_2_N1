@@ -3,6 +3,7 @@
 #include<iostream>
 #include <sstream>
 #include <string>
+#include <iterator>
 #include <cstddef>
 
 using namespace std;
@@ -109,12 +110,17 @@ istream& operator>>(istream &s, BankAccount &BA)
 	s >>BA._opened;
 	s >>BA._sum;
 	s >>BA._percents;
+	//do
+	//{
+//
+	//} while (s.get() != '\n');
+	
 	//string c;
 	//s >> c;
 	return s;
 }
-ostream& operator<<(ostream &s, BankAccount& BA)
-{
+ostream& operator<<(ostream &s, const BankAccount& BA)
+{ 
 	s <<BA._ownerLastName<<" ";
 	s <<BA._numberOfCount<<" ";
 	s <<BA._password<<" ";
@@ -142,6 +148,7 @@ void BankAccount::InputNew()
 }
 void BankAccount:: Print()
 {
+	
 	cout << "Фамилия : "<< this->_ownerLastName<<'\n';
 	cout << "Номер счета : "<< this->_numberOfCount << '\n';
 	cout << "Пароль : "<< this->_password << '\n';

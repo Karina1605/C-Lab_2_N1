@@ -30,7 +30,7 @@ public:
 	
 	//Перегрузка операторов поточного ввода-вывода
 	friend istream& operator>>(istream& in, Date& date);
-	friend ostream& operator<<(ostream& out, Date& date);
+	friend ostream& operator<<(ostream& out, const Date& date);
 	//Строковое представление даты
 	string ToString() const;
 	~Date();

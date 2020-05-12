@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "Bank.h"
-#include<iostream>
+#include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <iterator>
 
 using namespace std;
 Bank::Bank()
@@ -150,11 +151,14 @@ bool Bank::SearchBinary(ulongint Number)
 //Запись в файл
 void Bank:: PutToFile(ostream &out)
 {
+	ostream_iterator<BankAccount> out_it(out);
 	auto it = Clients.begin();
 	while (it!=Clients.end())
 	{
-		BankAccount b = (*it).second;
-		out << b;
+		*out_it = (*it).second;
+		//out_it++;
+		//BankAccount b = (*it).second;
+		//out << b;
 		it++;
 	}	
 }
@@ -163,14 +167,38 @@ void Bank:: LoadFromFile(string FileName)
 {
 	Clients.clear();
 	fstream fin;
-	fin.open(FileName, ios::in);
+	fin.open(FileName/*, ios::in*/);
 	BankAccount buf;
-	while (fin >> buf) {
+	/*while (fin>>buf)
+	{
+		//fin >> buf;
+		cout << "read\n";
+		buf.Print();
 		Clients.emplace(buf.GetNumberOfAccount(), buf);
+		cout << "emplaced\n";
+		if (fin.bad())
+			cout << "bad\n";
+		if (fin.fail())
+			cout << "filed\n";
+		if (fin.eof())
+		{
+			cout << "reach end\n";
+			break;
+		}
+			
 	}
-		
+	cout << "out of while\n";*/
+	istream_iterator<BankAccount> B_it(fin);
+	istreambuf_iterator<BankAccount> end();
+	while (!fin.eof())
+	{
+		Clients.emplace((*B_it).GetNumberOfAccount(), (*B_it));
+		B_it++;
+	}
+	
 	fin.close();
 }
+
 
 
 //Выборка по фамилии

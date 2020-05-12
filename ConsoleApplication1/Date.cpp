@@ -108,7 +108,7 @@ istream& operator>>(istream& in, Date& date)
 	in >> date._yyyy;
 	return in;
 }
-ostream& operator<<(ostream& out, Date& date)
+ostream& operator<<(ostream& out, const Date& date)
 {
 	out << date.ToString();
 	return out;

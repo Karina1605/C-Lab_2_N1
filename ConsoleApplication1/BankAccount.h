@@ -45,12 +45,14 @@ public:
 	unsigned long int GetNumberOfAccount() const;
 	void SetPercents(float set);
 	
+
+
 	//Строковое представление
 	string ToString() const;
 	
 	//Перегрузка операторов ввода-вывода
  	friend istream& operator>>(istream &s, BankAccount& BA);
-	friend ostream& operator<<(ostream &s, BankAccount& BA);
+	friend ostream& operator<<(ostream &s, const BankAccount& BA);
 
 	~BankAccount();
 };
