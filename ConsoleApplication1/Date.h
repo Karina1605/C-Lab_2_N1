@@ -25,6 +25,7 @@ public:
 	bool operator ==(const Date other) const;
 	bool operator <(const Date other) const;
 	bool operator >(const Date other) const;
+	//int operator - (const Date& other) const;
 	//¬вод новой даты с консоли
 	void InputNew();
 	

@@ -26,9 +26,21 @@ private:
 	void Sort(TypesOfSort type);
 	//Меню изменения одного элемента
 	int menu();
-public:
+	static Bank* single;
 	//Конструктор
 	Bank();
+	Bank(const Bank&) = delete;
+	Bank& operator = (Bank&) = delete;
+	Bank(string fileName);
+	
+	static string FileForStoring;
+	
+
+	void LoadFromFile(string FileName);
+public:
+	
+	unsigned long int GenerateNumber();
+	static Bank* GetInstanse();
 	//Добавление счета
 	void Add();
 	void Add(BankAccount NewAccount);
@@ -55,12 +67,10 @@ public:
 	//Выборки всех элементов, подходящих по критерию, нельзя сосавлять выборки по номеру, тк он единственный
 	list<BankAccount> GetAllByName(string LastName);
 	list<BankAccount> GetAllByDate(Date opened);
-	
+	BankAccount GetByNumber(ulongint number);
 	//Загрузка из файла/Запись в файл
-	void PutToFile(ostream &out);
-	void LoadFromFile(string FileName);
-	
-	
+	void PutToFile();
 	~Bank();
+	BankAccount* GetForEdit(unsigned long int Number, string LastName, int Password);
 };
 

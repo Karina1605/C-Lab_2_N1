@@ -1,7 +1,11 @@
 #pragma once
 #include "Date.h"
+#include "AccountInfo.h"
 #include<string>
 using namespace std;
+
+
+
 //Класс одного аккаунта
 class BankAccount
 {
@@ -11,13 +15,13 @@ private:
 	string _ownerLastName;				// Фамилия владельца
 	float _sum;							// Сумма на счете
 	Date _opened;						// Дата открытия
-	float _percents;					// Проценты
+	AccountInfo *_info;
 	
 public:
 	//Конструкторы
 	explicit BankAccount() ;
 	BankAccount(string Owner, unsigned long int Number, unsigned int Password, Date Opened,
-		float Percents, float Sum);
+	 	AccountInfo *info, float Sum);
  	//Операторы сравнения (по дате и фамилии) 
 	bool operator == (const string other) const;
 	bool operator == (const Date other) const;
@@ -31,21 +35,37 @@ public:
 	void SetLastname(string NewLastname);
 	void PutSum(float Sum);
 	void TakeSum(float Sum);
+	void SetNumberOfAccount(unsigned long int number);
 	void ResetSum();
 	
 	//Ввод-вывод на консоль, вынесены отдельно для удобочитаемости на консоли
 	void InputNew();
 	void Print();
 
+	//информация о счете
+	string GetName() const
+	{
+		return _info->GetName();
+	}
+	float GetPercent() const
+	{
+		return _info->GetPercents();
+
+	}
+	bool GetAbilityToTakeAPart()
+	{
+		return _info->GetCanTakeAPart();
+	}
+
 	//Методы-геттеры
 	float GetCurrentSum() const;
-	float GetPercents() const;
 	Date GetOpenDate() const;
 	string GetLastName() const;
-	unsigned long int GetNumberOfAccount() const;
-	void SetPercents(float set);
 	
-
+	unsigned long int GetNumberOfAccount() const;
+	
+	bool CheckPassword(int pass);
+	
 
 	//Строковое представление
 	string ToString() const;

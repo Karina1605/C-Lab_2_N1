@@ -4,12 +4,25 @@
 #include <fstream>
 #include <algorithm>
 #include <iterator>
-
+#include <string>
 using namespace std;
+
+string Bank:: FileForStoring="BankInfo.txt";
 Bank::Bank()
 {
 }
+Bank::Bank(string filename)
+{
+	LoadFromFile(filename);
+}
 
+Bank* Bank::single = nullptr;
+Bank* Bank::GetInstanse()
+{
+	if (single == nullptr)
+		single = new Bank(FileForStoring);
+	return single;
+}
 //Сортировка элементов
 void Bank::Sort(TypesOfSort type)
 {
@@ -84,11 +97,6 @@ void Bank::Change(ulongint Number)
 		buff.ResetSum();
 		buff.PutSum(sum);
 		break;
-	case 3:
-		cout << "Новый процент : ";
-		cin >> sum;
-		buff.SetPercents(sum);
-		break;
 	default:
 		cout << "Некорректный номер операции\n";
 		break;
@@ -100,6 +108,16 @@ void Bank::Change(ulongint Number)
 void Bank::Remove(ulongint Number)
 {
 	Clients.erase(Number);
+}
+
+
+BankAccount* Bank::GetForEdit(unsigned long int Number, string LastName, int Password)
+{
+	auto it = Clients.find(Number);
+	if (it == Clients.end())
+		return nullptr;
+	if ((*it).second.GetLastName() == LastName && (*it).second.CheckPassword(Password))
+		return &((*it).second);
 }
 
 //Линейный поиск через итератор
@@ -149,9 +167,11 @@ bool Bank::SearchBinary(ulongint Number)
 }
 
 //Запись в файл
-void Bank:: PutToFile(ostream &out)
+void Bank:: PutToFile()
 {
-	ostream_iterator<BankAccount> out_it(out);
+	fstream outf;
+	outf.open(FileForStoring, ios::out);
+	ostream_iterator<BankAccount> out_it(outf);
 	auto it = Clients.begin();
 	while (it!=Clients.end())
 	{
@@ -161,33 +181,15 @@ void Bank:: PutToFile(ostream &out)
 		//out << b;
 		it++;
 	}	
+	outf.close();
 }
 //Чтение из файла
 void Bank:: LoadFromFile(string FileName)
 {
 	Clients.clear();
 	fstream fin;
-	fin.open(FileName/*, ios::in*/);
+	fin.open(FileName);
 	BankAccount buf;
-	/*while (fin>>buf)
-	{
-		//fin >> buf;
-		cout << "read\n";
-		buf.Print();
-		Clients.emplace(buf.GetNumberOfAccount(), buf);
-		cout << "emplaced\n";
-		if (fin.bad())
-			cout << "bad\n";
-		if (fin.fail())
-			cout << "filed\n";
-		if (fin.eof())
-		{
-			cout << "reach end\n";
-			break;
-		}
-			
-	}
-	cout << "out of while\n";*/
 	istream_iterator<BankAccount> B_it(fin);
 	istreambuf_iterator<BankAccount> end();
 	while (!fin.eof())
@@ -199,7 +201,15 @@ void Bank:: LoadFromFile(string FileName)
 	fin.close();
 }
 
-
+BankAccount Bank::GetByNumber(ulongint number)
+{
+	auto it = Clients.find(number);
+	if (it != Clients.end())
+	return (*it).second;
+	BankAccount empty;
+	empty.SetNumberOfAccount(-1);
+	return empty;
+}
 
 //Выборка по фамилии
 list<BankAccount> Bank::GetAllByName(string LastName) 
@@ -214,6 +224,18 @@ list<BankAccount> Bank::GetAllByName(string LastName)
 	}
 		
 	return res;
+}
+
+unsigned long int Bank::GenerateNumber()
+{
+	unsigned long int n = 0;
+	bool stop = false;
+	do
+	{
+		n = rand();
+		stop = !this->Search(n);
+	} while (!stop);
+	return n;
 }
 
 //Выборка по дате открытия счета

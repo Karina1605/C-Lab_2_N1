@@ -84,6 +84,27 @@ int Date::GetDaysInMonth()
 bool Date::IsCorrectDate() {
 	return (_yyyy >= 2000 && _mm >= 1 && _mm <= 12 && _dd >= 1 && _dd << GetDaysInMonth());
 }
+
+/*int Date:: operator - (const Date& other) const
+{
+	Date buf;
+	if ((*this) < other)
+		throw exception("нельзя вычесть из меньшей даты большую");
+	buf = *this;
+	int previousDays = buf.GetDaysInMonth() - buf._dd;
+	while ( buf._yyyy!=other._yyyy && buf._mm!=other._mm)
+	{
+		days += buf.GetDaysInMonth() - previousDays; 
+		if (buf._mm == 12)
+		{
+			buf._yyyy++;
+			buf._mm = 1;
+		}
+		else
+			buf._mm++;
+	}
+}*/
+
 //Строковое представление даты
 string Date::ToString() const
 {
