@@ -118,7 +118,10 @@ void Manager:: PerformAction(int num)
 		cout << "Номер счета: ";
 		cin >> number;
 		acc = FindByNumber(number);
-		acc.Print();
+		if (acc.GetNumberOfAccount() == -1)
+			cout << "Нет счета с таким номером\n";
+		else
+			acc.Print();
 		break;
 	case 0:
 		cout << "До свидания\n";
