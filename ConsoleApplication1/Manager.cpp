@@ -141,9 +141,9 @@ int Manager::GetNumberOfAction()
 	do
 	{
 		cin >> res;
-		if (res < 0 || res>5)
+		if (res < 0 || res>6)
 			cout << "Ошибка, вы должны ввести число от 0 до 6\n";
-	} while (res < 0 || res>5);
+	} while (res < 0 || res>6);
 	return res;
 }
 
